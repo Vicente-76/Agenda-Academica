@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/templates/modeloGeral.xhtml">
+<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="useracao" value="#{ausenciaBean.acao}" />
+			<f:viewParam name="codigo" value="#{ausenciaBean.codigo}" />
+			
+			<f:event listener="#{ausenciaBean.carregarCadastro}" type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="frmCadAusencia">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Ausencia" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid id="pnlCadAusencia" columns="2">
+							
+				<p:outputLabel value="Disciplina: " />
+				<p:selectOneMenu
+					value="#{ausenciaBean.ausenciaCadastro.disciplina}"
+					converter="disciplinaConverter"
+					readonly="#{ausenciaBean.acao == 'excluir'}">
+					<f:selectItem itemValue="" itemLabel="Selecione uma Disciplina" />
+					<f:selectItems value="#{ausenciaBean.listaDisciplinas}"
+						var="disciplina" itemValue="#{disciplinas}"
+						itemLabel="#{disciplina.nomeDisciplina}" />
+					<f:validateBean />
+				</p:selectOneMenu>
+				
+				<p:outputLabel for="data" value="Data: " />
+				<p:calendar id="data"
+					value="#{ausenciaBean.ausenciaCadastro.data}"	
+					effect="fold"/>
+							
+				<p:outputLabel value="Quantidade: " />
+				<p:inputText maxlength="100" size="10"
+					value="#{ausenciaBean.ausenciaCadastro.quantidade}" />		
+			</h:panelGrid>
+			
+			<h:panelGrid columns="3">
+				<p:commandButton value="Novo" icon="ui-icon-document"
+					actionListener="#{ausenciaBean.novo}"
+					update=":frmCadAusencia:pnlCadAusencia"
+					rendered="#{ausenciaBean.acao == 'novo'}" />
+
+				<p:commandButton value="Salvar" icon="ui-icon-disk"
+					actionListener="#{ausenciaBean.salvar}"
+					update=":msgGlobal :frmCadAusencia:pnlCadAusencia"
+					rendered="#{ausenciaBean.acao == 'novo'}" />
+
+				<p:commandButton value="Excluir" icon="ui-icon-trash"
+					actionListener="#{ausenciaBean.excluir}" update=":msgGlobal"
+					rendered="#{ausenciaBean.acao == 'excluir'}" />
+
+				<p:commandButton value="Editar" icon="ui-icon-pencil"
+					actionListener="#{ausenciaBean.editar}" update=":msgGlobal"
+					rendered="#{ausenciaBean.acao == 'editar'}" />
+
+				<p:button value="Voltar" icon="ui-icon-arrowstop-1-w"
+					outcome="/pages/ausenciaPesquisa.xhtml" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

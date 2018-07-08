@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:event listener="#{tipoAtividadeBean.carregarPesquisa}" type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form>
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Tipo de Atividades" />
+				</f:facet>
+			</p:toolbar>
+		</h:form>
+		<h:form>
+			<p:dataTable emptyMessage="Nenhum Registro encontrado"
+				var="tipoAtividade" value="#{tipoAtividadeBean.listatipoAtividade}"
+				filteredValue="#{tipoAtividadeBean.listaTipoAtividadeFiltrados}"
+				rows="10" paginator="true">
+				
+				<f:facet name="footer">
+					<p:button value="Novo" icon="ui-icon-document"
+						outcome="/pages/tipoAtividadeCadastro.xhtml">
+						<f:param name="useracao" value="novo" />
+					</p:button>
+				</f:facet>
+
+				<p:column headerText="Código" style="width:15%;">
+					<h:outputText value="#{tipoAtividade.codTipoAtividade}" />
+				</p:column>
+
+				<p:column headerText="Nome" filterBy="#{tipoAtividade.nomeTipoAtividade}" sortBy="#{tipoAtividade.nomeTipoAtividade}">
+					<h:outputText value="#{tipoAtividade.nomeTipoAtividade}" />
+				</p:column>
+				
+				<p:column headerText="Opções" style="width:15%;">
+					<p:button value="Editar" icon="ui-icon-pencil"
+						outcome="/pages/tipoAtividadeCadastro.xhtml">
+						<f:param name="useracao" value="editar" />
+						<f:param name="codigo" value="#{tipoAtividade.codTipoAtividade}" />
+					</p:button>
+
+					<p:button value="Excluir" icon="ui-icon-trash"
+						outcome="/pages/tipoAtividadeCadastro.xhtml">
+						<f:param name="useracao" value="excluir" />
+						<f:param name="codigo" value="#{tipoAtividade.codTipoAtividade}" />
+					</p:button>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

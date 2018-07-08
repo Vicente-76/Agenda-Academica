@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="useracao" value="#{tipoAtividadeBean.acao}" />
+			<f:viewParam name="codigo" value="#{tipoAtividadeBean.codigo}" />
+
+			<f:event listener="#{tipoAtividadeBean.carregarCadastro}" type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="frmCadTipoAtividade">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Tipo de Atividades" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid id="pnlCadTipoAtividade" columns="2">
+
+				<p:outputLabel value="Nome: " />
+				<p:inputText maxlength="100" size="50"
+					value="#{tipoAtividadeBean.tipoAtividadeCadastro.nomeTipoAtividade}"
+					readonly="#{tipoAtividadeBean.acao == 'excluir'}">
+					<f:validateBean />
+				</p:inputText>
+			</h:panelGrid>
+
+			<h:panelGrid columns="3">
+				<p:commandButton value="Novo" icon="ui-icon-document"
+					actionListener="#{tipoAtividadeBean.novo}"
+					update=":frmCadTipoAtividade:pnlCadTipoAtividade"
+					rendered="#{tipoAtividadeBean.acao == 'novo'}" />
+
+				<p:commandButton value="Salvar" icon="ui-icon-disk"
+					actionListener="#{tipoAtividadeBean.salvar}"
+					update=":msgGlobal :frmCadTipoAtividade:pnlCadTipoAtividade"
+					rendered="#{tipoAtividadeBean.acao == 'novo'}" />
+
+				<p:commandButton value="Excluir" icon="ui-icon-trash"
+					actionListener="#{tipoAtividadeBean.excluir}" update=":msgGlobal"
+					rendered="#{tipoAtividadeBean.acao == 'excluir'}" />
+
+				<p:commandButton value="Editar" icon="ui-icon-pencil"
+					actionListener="#{tipoAtividadeBean.editar}" update=":msgGlobal"
+					rendered="#{tipoAtividadeBean.acao == 'editar'}" />
+
+				<p:button value="Voltar" icon="ui-icon-arrowstop-1-w"
+					outcome="/pages/tipoAtividadePesquisa.xhtml" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

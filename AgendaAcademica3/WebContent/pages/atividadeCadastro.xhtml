@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="useracao" value="#{atividadeBean.acao}" />
+			<f:viewParam name="codigo" value="#{atividadeBean.codigo}" />
+
+			<f:event listener="#{atividadeBean.carregarCadastro}"
+				type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="frmCadAtividade">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Atividades" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid id="pnlCadAtividades" columns="2">
+
+				<p:outputLabel value="Nome da Atividade: " />
+				<p:inputText maxlength="100" size="50"
+					value="#{atividadeBean.atividadeCadastro.nomeAtividade}"
+					readonly="#{atividadeBean.acao == 'excluir'}">
+					<f:validateBean />
+				</p:inputText>
+
+				<p:outputLabel value="Disciplina: " />
+				<p:selectOneMenu
+					value="#{atividadeBean.atividadeCadastro.disciplinas}"
+					converter="disciplinaConverter"
+					readonly="#{usuarioBean.acao == 'excluir'}">
+					<f:selectItem itemValue="" itemLabel="Selecione uma Disciplina" />
+					<f:selectItems value="#{atividadeBean.listaDisciplinas}"
+						var="disciplina" itemValue="#{disciplinas}"
+						itemLabel="#{disciplina.nomeDisciplina}" />
+					<f:validateBean />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Tipo da Atividade: " />
+				<p:selectOneMenu
+					value="#{atividadeBean.atividadeCadastro.tipoAtividades}"
+					converter="tipoAtividadeConverter"
+					readonly="#{usuarioBean.acao == 'excluir'}">
+					<f:selectItem itemValue=""
+						itemLabel="Selecione um Tipo de Atividade" />
+					<f:selectItems value="#{atividadeBean.listatipoAtividade}"
+						var="tipoatividade" itemValue="#{tipoatividades}"
+						itemLabel="#{tipoatividade.nomeTipoAtividade}" />
+					<f:validateBean />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Data: " />
+				<p:calendar id="data"
+					value="#{atividadeBean.atividadeCadastro.data}"	
+					effect="fold" pattern="dd/MM/yyyy" mask="true" showOn="button"
+					readonly="#{usuarioBean.acao == 'excluir'}">
+					<f:validateBean />
+				</p:calendar>
+				
+				<p:outputLabel value="Hora: " />
+				<p:calendar id="hora"
+					value="#{atividadeBean.atividadeCadastro.hora}"	
+					effect="fold" pattern="HH:mm" mask="true" showOn="button" 
+					readonly="#{usuarioBean.acao == 'excluir'}">
+					<f:validateBean />
+				</p:calendar>
+				
+				<p:outputLabel for="entregue" value="Entregue: " />
+				<p:selectOneRadio id="entregue"
+					value="#{atividadeBean.atividadeCadastro.entregue}"
+					readonly="#{usuarioBean.acao == 'excluir'}">
+					<f:validateBean />
+					<f:selectItem itemLabel="Sim" itemValue="S" />
+					<f:selectItem itemLabel="Não" itemValue="N" />
+				</p:selectOneRadio>
+
+				<p:outputLabel value="Nota: " />
+				<p:inputText maxlength="100" size="10"
+					value="#{atividadeBean.atividadeCadastro.nota}"
+					readonly="#{usuarioBean.acao == 'excluir'}">
+					<f:validateBean />
+				</p:inputText>
+			</h:panelGrid>
+			
+			<h:panelGrid columns="3">
+				<p:commandButton value="Novo" icon="ui-icon-document"
+					actionListener="#{atividadeBean.novo}"
+					update=":frmCadAtividade:pnlCadAtividades"
+					rendered="#{atividadeBean.acao == 'novo'}" />
+
+				<p:commandButton value="Salvar" icon="ui-icon-disk"
+					actionListener="#{atividadeBean.salvar}"
+					update=":msgGlobal :frmCadAtividade:pnlCadAtividades"
+					rendered="#{atividadeBean.acao == 'novo'}" />
+
+				<p:commandButton value="Excluir" icon="ui-icon-trash"
+					actionListener="#{atividadeBean.excluir}" update=":msgGlobal"
+					rendered="#{atividadeBean.acao == 'excluir'}" />
+
+				<p:commandButton value="Editar" icon="ui-icon-pencil"
+					actionListener="#{atividadeBean.editar}" update=":msgGlobal"
+					rendered="#{atividadeBean.acao == 'editar'}" />
+
+				<p:button value="Voltar" icon="ui-icon-arrowstop-1-w"
+					outcome="/pages/atividadePesquisa.xhtml" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

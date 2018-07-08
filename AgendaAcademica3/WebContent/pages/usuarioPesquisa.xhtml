@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/templates/modeloGeral.xhtml">
+<ui:define name="metadata">
+		<f:metadata>
+			<f:event listener="#{usuarioBean.carregarPesquisa}" type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form>
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Usuários" />
+				</f:facet>
+			</p:toolbar>
+		</h:form>
+		<h:form>
+			<p:dataTable emptyMessage="Nenhum Registro encontrado"
+				var="user" value="#{usuarioBean.listaUsuarios}"
+				filteredValue="#{usuarioBean.listaUsuariosFiltrados}" 
+				rows="10" paginator="true">
+				
+				<f:facet name="footer">
+					<p:button value="Novo" icon="ui-icon-document"
+						outcome="/pages/usuarioCadastro.xhtml">
+						<f:param name="useracao" value="novo" />
+					</p:button>
+				</f:facet>
+				
+				<p:column headerText="Nome" filterBy="#{user.nome}" sortBy="#{user.nome}" >
+					<h:outputText value="#{user.nome}" />
+				</p:column>
+
+				<p:column headerText="Curso">
+					<h:outputText value="#{user.curso}" />
+				</p:column>
+
+				<p:column headerText="Instituição">
+					<h:outputText value="#{user.instituicao}" />
+				</p:column>
+
+				<p:column headerText="Cidade">
+					<h:outputText value="#{user.cidade}" />
+				</p:column>
+
+				<p:column headerText="Opções" style="width:15%;">
+					<p:button value="Editar" icon="ui-icon-pencil"
+						outcome="/pages/usuarioCadastro.xhtml">
+						<f:param name="useracao" value="editar" />
+						<f:param name="codigo" value="#{user.codUsuario}" />
+					</p:button>
+
+					<p:button value="Excluir" icon="ui-icon-trash"
+						outcome="/pages/usuarioCadastro.xhtml">
+						<f:param name="useracao" value="excluir" />
+						<f:param name="codigo" value="#{user.codUsuario}" />
+					</p:button>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

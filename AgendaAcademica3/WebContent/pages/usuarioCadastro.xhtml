@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="useracao" value="#{usuarioBean.acao}" />
+			<f:viewParam name="codigo" value="#{usuarioBean.codigo}" />
+			<f:viewParam name="newacao" value="#{autenticacaoBean.acao}" />
+
+			<f:event listener="#{usuarioBean.carregarCadastro}"
+				type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="frmCadUsuario">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Usuários" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid id="pnlCadUsuario" columns="2">
+
+				<p:outputLabel value="Nome:" />
+				<p:inputText maxlength="100" size="50"
+					value="#{usuarioBean.usuarioCadastro.nome}"
+					readonly="#{usuarioBean.acao == 'excluir'}">
+					<f:validateBean />
+				</p:inputText>
+
+				<p:outputLabel value="Senha: " />
+				<p:inputText maxlength="20" size="20" type="password"
+					value="#{usuarioBean.usuarioCadastro.senha}"
+					readonly="#{usuarioBean.acao == 'excluir'}" />
+
+				<p:outputLabel value="Curso: " />
+				<p:inputText maxlength="100" size="50"
+					value="#{usuarioBean.usuarioCadastro.curso}"
+					readonly="#{usuarioBean.acao == 'excluir'}" />
+
+				<p:outputLabel value="Instituição: " />
+				<p:inputText maxlength="50" size="50"
+					value="#{usuarioBean.usuarioCadastro.instituicao}"
+					readonly="#{usuarioBean.acao == 'excluir'}">
+				</p:inputText>
+
+				<p:outputLabel value="Cidade: " />
+				<p:inputText maxlength="20" size="50"
+					value="#{usuarioBean.usuarioCadastro.cidade}"
+					readonly="#{usuarioBean.acao == 'excluir'}">
+				</p:inputText>
+			</h:panelGrid>
+
+			<h:panelGrid columns="3">
+				<p:commandButton value="Novo" icon="ui-icon-document"
+					actionListener="#{usuarioBean.novo}"
+					update=":frmCadUsuario:pnlCadUsuario"
+					rendered="#{usuarioBean.acao == 'novo' or autenticacaoBean.acao == 'new'}"/>
+
+				<p:commandButton value="Salvar" icon="ui-icon-disk"
+					actionListener="#{usuarioBean.salvar}"
+					update=":msgGlobal :frmCadUsuario:pnlCadUsuario"
+					rendered="#{usuarioBean.acao == 'novo' or autenticacaoBean.acao == 'new'}"/>
+
+				<p:commandButton value="Excluir" icon="ui-icon-trash"
+					actionListener="#{usuarioBean.excluir}" update=":msgGlobal"
+					rendered="#{usuarioBean.acao == 'excluir'}" />
+
+				<p:commandButton value="Editar" icon="ui-icon-pencil"
+					actionListener="#{usuarioBean.editar}" update=":msgGlobal"
+					rendered="#{usuarioBean.acao == 'editar'}" />
+
+				<p:button id="uVoltar" value="Voltar" icon="ui-icon-arrowstop-1-w"
+					rendered="#{autenticacaoBean.acao == null}"
+					outcome="/pages/usuarioPesquisa.xhtml" />
+				<p:button value="Login" icon="ui-icon-arrowstop-1-w"
+					rendered="#{autenticacaoBean.acao == 'new'}"
+					outcome="/pages/autenticacao.xhtml" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="useracao" value="#{disciplinaBean.acao}" />
+			<f:viewParam name="codigo" value="#{disciplinaBean.codigo}" />
+			
+			<f:event listener="#{disciplinaBean.carregarCadastro}" type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="frmCadDisciplina">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Disciplinas" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid id="pnlCadDisciplina" columns="2">
+				
+				<p:outputLabel value="Nome da Disciplina: " />
+				<p:inputText maxlength="100" size="50"
+					value="#{disciplinaBean.disciplinaCadastro.nomeDisciplina}"
+					readonly="#{disciplinaBean.acao == 'excluir'}">
+					<f:validateBean />
+				</p:inputText>
+				
+				<p:outputLabel value="Nome do Professor: " />
+				<p:inputText maxlength="100" size="50"
+					value="#{disciplinaBean.disciplinaCadastro.nomeProf}"
+					readonly="#{disciplinaBean.acao == 'excluir'}">
+					<f:validateBean />	
+				</p:inputText>
+				
+				<p:outputLabel value="Email do Professor: " />
+				<p:inputText maxlength="100" size="50"
+					value="#{disciplinaBean.disciplinaCadastro.emailProf}"
+					readonly="#{disciplinaBean.acao == 'excluir'}">
+					<f:validateBean />
+				</p:inputText>
+				
+				<p:outputLabel value="Carga Horaria: " />
+				<p:inputText maxlength="100" size="10"
+					value="#{disciplinaBean.disciplinaCadastro.cargaHoraria}"
+					readonly="#{disciplinaBean.acao == 'excluir'}">
+					<f:validateBean />
+				</p:inputText>
+				
+				<p:outputLabel value="Semestre: " />
+				<p:inputText maxlength="100" size="10"
+					value="#{disciplinaBean.disciplinaCadastro.semestre}"
+					readonly="#{disciplinaBean.acao == 'excluir'}">
+					<f:validateBean/>
+				</p:inputText>
+				
+				<p:outputLabel value="Media: " />
+				<p:inputText size="10"
+					value="#{disciplinaBean.disciplinaCadastro.media}"
+					readonly="#{disciplinaBean.acao == 'excluir'}">
+					<f:validateBean/>
+				</p:inputText>	
+						
+			</h:panelGrid>
+			<h:panelGrid columns="3">
+				<p:commandButton value="Novo" icon="ui-icon-document"
+					actionListener="#{disciplinaBean.novo}"
+					update=":frmCadDisciplina:pnlCadDisciplina"
+					rendered="#{disciplinaBean.acao == 'novo'}" />
+
+				<p:commandButton value="Salvar" icon="ui-icon-disk"
+					actionListener="#{disciplinaBean.salvar}"
+					update=":msgGlobal :frmCadDisciplina:pnlCadDisciplina"
+					rendered="#{disciplinaBean.acao == 'novo'}" />
+
+				<p:commandButton value="Excluir" icon="ui-icon-trash"
+					actionListener="#{disciplinaBean.excluir}" update=":msgGlobal"
+					rendered="#{disciplinaBean.acao == 'excluir'}" />
+
+				<p:commandButton value="Editar" icon="ui-icon-pencil"
+					actionListener="#{disciplinaBean.editar}" update=":msgGlobal"
+					rendered="#{disciplinaBean.acao == 'editar'}" />
+
+				<p:button value="Voltar" icon="ui-icon-arrowstop-1-w"
+					outcome="/pages/disciplinaPesquisa.xhtml" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
